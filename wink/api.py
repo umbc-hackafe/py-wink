@@ -76,6 +76,9 @@ class Wink(object):
             if self.auth_object is not None:
                 self.auth_object.save(self.auth)
 
+        if self.debug:
+            print "Authentication being used:\n\tAccess token : %s\n\tRefresh token : %s" % (self.auth['access_token'], self.auth['refresh_token'])
+
         # add the auth header
         all_headers = self._headers()
         all_headers.update(headers)
