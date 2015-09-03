@@ -30,6 +30,9 @@ def need_to_reauth(tolerance=10, **kwargs):
     if "expires" not in kwargs:
         return True
 
+    if not kwargs["expires"]:
+        return True
+
     expires = _datetime_deserialize(kwargs["expires"])
 
     now = (
