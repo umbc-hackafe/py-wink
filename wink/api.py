@@ -2,7 +2,7 @@ import httplib2
 import json
 from pprint import pprint
 
-from auth import reauth, need_to_reauth
+from auth import auth, reauth, need_to_reauth, need_to_auth
 import devices
 
 
@@ -59,6 +59,12 @@ class Wink(object):
         }
 
     def _http(self, path, method, headers={}, body=None, expected="200"):
+        # have we ever authed?
+        if need_to_auth(**self.auth):
+            if self.debug:
+                print "Getting first access token"
+            self.auth = auth(**self.auth)
+
         # see if we need to reauth?
         if need_to_reauth(**self.auth):
             if self.debug:

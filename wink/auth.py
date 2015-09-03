@@ -24,6 +24,14 @@ def _datetime_deserialize(s):
     return datetime.datetime.strptime(s, _datetime_format)
 
 
+def need_to_auth(**kwargs):
+    """Determine whether an initial authentication is necessary."""
+    if "access_token" not in kwargs:
+        return True
+
+    if not kwargs["access_token"]:
+        return True
+
 def need_to_reauth(tolerance=10, **kwargs):
     """Determine whether reauthentication is necessary."""
 
