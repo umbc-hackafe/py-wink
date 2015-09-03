@@ -96,8 +96,9 @@ def _auth(data, auth_path="/oauth2/token", **kwargs):
     # TODO handle case of bad auth information
 
     if resp["status"] != "201" and resp["status"] != "200":
+        body_json = json.loads(content)
         raise RuntimeError(
-            "expected HTTP 200 or 201, but got %s for auth" % resp["status"]
+            "expected HTTP 200 or 201, but got %s for auth with an error of %s " % (resp["status"], body_json["error"])
         )
 
     data = json.loads(content)["data"]
