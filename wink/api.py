@@ -194,10 +194,17 @@ class Wink(object):
 
         for device_info in devices_info:
             device_type = None
-            for k in device_info:
-                if k.endswith("_id") and hasattr(devices, k[:-3]):
-                    device_type = k[:-3]
-                    break
+
+            # Unsure why the old logic was just skimming the end of the first
+            # object with _id, it seems like object_type should be the proper
+            # way to do perform it.
+            if device_info["object_type"]:
+                device_type = device_info["object_type"]
+            else:
+                for k in device_info:
+                    if k.endswith("_id") and hasattr(devices, k[:-3]):
+                        device_type = k[:-3]
+                        break
 
             if device_type is None:
                 continue

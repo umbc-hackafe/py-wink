@@ -357,3 +357,20 @@ class piggy_bank(DeviceBase, Sharable):
 
 class sensor_pod(DeviceBase, Sharable):
     pass
+
+# Wink Hub
+class hub(DeviceBase, Sharable):
+    pass
+
+# DropCam / NestCam
+class camera(DeviceBase, Sharable):
+    pass
+
+# MyQ Chamberlin devices
+class garage_door(DeviceBase, Sharable):
+    pass
+
+# GE Link lightbulb
+class light_bulb(DeviceBase, Sharable):
+    pass
+
