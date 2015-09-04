@@ -360,17 +360,46 @@ class sensor_pod(DeviceBase, Sharable):
 
 # Wink Hub
 class hub(DeviceBase, Sharable):
-    pass
+    non_config_fields = [
+
+    ]
+
+    mutable_fields = [
+        ("name", str),
+        ("desired_state", dict)
+    ]
 
 # DropCam / NestCam
 class camera(DeviceBase, Sharable):
+    non_config_fields = [
+
+    ]
+
+    mutable_fields = [
+        ("name", str),
+        ("desired_state", str)
+    ]
     pass
 
 # MyQ Chamberlin devices
 class garage_door(DeviceBase, Sharable):
-    pass
+    non_config_fields = [
+
+    ]
+
+    mutable_fields = [
+        ("name", str),
+        ("desired_state", str)
+    ]
 
 # GE Link lightbulb
 class light_bulb(DeviceBase, Sharable):
-    pass
+    non_config_fields = [
+
+    ]
+
+    mutable_fields = [
+        ("name", str),
+        ("desired_state", dict)
+    ]
 
