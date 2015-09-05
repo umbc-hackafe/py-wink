@@ -384,7 +384,22 @@ class camera(DeviceBase, Sharable):
 # MyQ Chamberlin devices
 class garage_door(DeviceBase, Sharable):
     non_config_fields = [
-
+        "radio_type",
+        "upc_code",
+        "upc_id",
+        "model_name",
+        "lat_lng",
+        "order",
+        "triggers",
+        "manufacturer_device_model",
+        "manufacturer_device_id",
+        "location",
+        "locale",
+        "device_manufacturer",
+        "created_at",
+        "unit",
+        "hidden_at",
+        "capabilities",
     ]
 
     mutable_fields = [
@@ -393,6 +408,7 @@ class garage_door(DeviceBase, Sharable):
     ]
 
     def _get_last_reading(self):
+        """Get the last reading of the device"""
         state = self.get_config()
 
         if 'last_reading' in state:
@@ -400,6 +416,7 @@ class garage_door(DeviceBase, Sharable):
 
 
     def current_position(self):
+        """Read the current position of the door"""
         last = self._get_last_reading()
 
         if 'position' in last:
@@ -412,12 +429,30 @@ class garage_door(DeviceBase, Sharable):
 
         return 'Unknown'
 
+    def is_fault(self):
+        """Query the device to see if there was a fault"""
+        last = self._get_last_reading()
+
+        if 'fault' in last:
+            return last['fault']
+
+        return 'Unknown'
+
+    def _set_state(self, position=None):
+        """Change the devices state"""
+        new_state = {
+                         u'position' : position
+                    }
+
+        self.update(dict(desired_state = new_state))
 
     def open(self):
-        pass
+        """Open the garage door"""
+        self._set_state(position=1.0)
 
     def close(self):
-        pass
+        """Close the garage door"""
+        self._set_state(position=0.0)
 
 # GE Link lightbulb
 class light_bulb(DeviceBase, Sharable):
