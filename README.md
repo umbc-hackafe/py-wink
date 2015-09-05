@@ -7,6 +7,10 @@ Python library for interfacing with Wink devices, including:
 - "Pivot Power Genius" powerstrip
 - "Porkfolio" piggy_bank
 - "Spotter" sensor_pod
+- "GeLinkBulb" light_bulb (should work for other light bulbs as well)
+- "Wink Hub" hub
+- "MyQ Garage" garage_opener
+- "NestCam/DropCam" camera
 
 This library implements the API at: http://docs.wink.apiary.io/
 
