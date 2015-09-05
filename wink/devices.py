@@ -358,6 +358,7 @@ class piggy_bank(DeviceBase, Sharable):
 class sensor_pod(DeviceBase, Sharable):
     pass
 
+
 # Wink Hub
 class hub(DeviceBase, Sharable):
     non_config_fields = [
@@ -368,6 +369,7 @@ class hub(DeviceBase, Sharable):
         ("name", str),
         ("desired_state", dict)
     ]
+
 
 # DropCam / NestCam
 class camera(DeviceBase, Sharable):
@@ -380,6 +382,7 @@ class camera(DeviceBase, Sharable):
         ("desired_state", str)
     ]
     pass
+
 
 # MyQ Chamberlin devices
 class garage_door(DeviceBase, Sharable):
@@ -414,7 +417,6 @@ class garage_door(DeviceBase, Sharable):
         if 'last_reading' in state:
             return state['last_reading']
 
-
     def current_position(self):
         """Read the current position of the door"""
         last = self._get_last_reading()
@@ -441,10 +443,10 @@ class garage_door(DeviceBase, Sharable):
     def _set_state(self, position=None):
         """Change the devices state"""
         new_state = {
-                         u'position' : position
+                        u'position': position
                     }
 
-        self.update(dict(desired_state = new_state))
+        self.update(dict(desired_state=new_state))
 
     def open(self):
         """Open the garage door"""
@@ -453,6 +455,7 @@ class garage_door(DeviceBase, Sharable):
     def close(self):
         """Close the garage door"""
         self._set_state(position=0.0)
+
 
 # GE Link lightbulb
 class light_bulb(DeviceBase, Sharable):
@@ -490,17 +493,17 @@ class light_bulb(DeviceBase, Sharable):
 
     def _set_state(self, brightness=None, powered=None):
         """Change the devices state"""
-        new_state = { }
+        new_state = {}
         if brightness is not None:
             new_state['brightness'] = brightness
 
         if powered is not None:
             new_state['powered'] = powered
 
-        self.update(dict(desired_state = new_state))
+        self.update(dict(desired_state=new_state))
 
     def set_brightness(self, brightness=1.0):
-        """Set the brightness of the bulb, regardless of being powered or not"""
+        """Set the brightness of the bulb, regardless of powered state"""
         self._set_state(brightness)
 
     def is_on(self):

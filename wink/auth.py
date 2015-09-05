@@ -32,6 +32,7 @@ def need_to_auth(**kwargs):
     if not kwargs["access_token"]:
         return True
 
+
 def need_to_reauth(tolerance=10, **kwargs):
     """Determine whether reauthentication is necessary."""
 
@@ -65,7 +66,6 @@ def auth(grant_type="password", auth_path="/oauth2/token", **kwargs):
         data['username'] = kwargs['username']
     elif 'user_id' in kwargs.keys():
         data['user_id'] = kwargs['user_id']
-
 
     result = _auth(data, auth_path=auth_path, **kwargs)
     del result["password"]
@@ -106,7 +106,9 @@ def _auth(data, auth_path="/oauth2/token", **kwargs):
     if resp["status"] != "201" and resp["status"] != "200":
         body_json = json.loads(content)
         raise RuntimeError(
-            "expected HTTP 200 or 201, but got %s for auth with an error of %s " % (resp["status"], body_json["error"])
+            "expected HTTP 200 or 201,"
+            "but got %s for auth with an error of %s " %
+            (resp["status"], body_json["error"])
         )
 
     data = json.loads(content)["data"]
