@@ -457,7 +457,23 @@ class garage_door(DeviceBase, Sharable):
 # GE Link lightbulb
 class light_bulb(DeviceBase, Sharable):
     non_config_fields = [
-
+        "radio_type",
+        "upc_code",
+        "upc_id",
+        "model_name",
+        "lat_lng",
+        "order",
+        "triggers",
+        "manufacturer_device_id",
+        "manufacturer_device_model",
+        "location",
+        "locale",
+        "device_manufacturer",
+        "created_at",
+        "unit",
+        "hidden_at",
+        "capabilities",
+        "gang_id",
     ]
 
     mutable_fields = [
@@ -465,3 +481,66 @@ class light_bulb(DeviceBase, Sharable):
         ("desired_state", dict)
     ]
 
+    def _get_last_reading(self):
+        """Get the last reading of the device"""
+        state = self.get_config()
+
+        if 'last_reading' in state:
+            return state['last_reading']
+
+    def _set_state(self, brightness=None, powered=None):
+        """Change the devices state"""
+        new_state = { }
+        if brightness is not None:
+            new_state['brightness'] = brightness
+
+        if powered is not None:
+            new_state['powered'] = powered
+
+        self.update(dict(desired_state = new_state))
+
+    def set_brightness(self, brightness=1.0):
+        """Set the brightness of the bulb, regardless of being powered or not"""
+        self._set_state(brightness)
+
+    def is_on(self):
+        """Check if the bulb is powered on or not"""
+        last = self._get_last_reading()
+
+        if 'powered' in last:
+            return last['powered']
+
+        return 'Unknown'
+
+    def get_brightness(self):
+        """Get the current brightness setting for the bulb"""
+        last = self._get_last_reading()
+
+        # Artificially give a brightness of 0.0 if device
+        # is powered off, since it retains last brightness
+        # even if there is no power
+        if 'powered' in last and last['powered'] == False:
+            return 0.0
+
+        if 'brightness' in last:
+            return last['brightness']
+
+        return -1
+
+    def turn_on(self):
+        """Turn the bulb on"""
+        self._set_state(powered=True)
+
+    def turn_off(self):
+        """Turn the bulb off"""
+        self._set_state(powered=False)
+
+    def toggle(self):
+        """Toggle the current bulb power state"""
+        state = self.is_on()
+
+        # An unknown state will try to turn off
+        if state:
+            self.turn_off()
+        else:
+            self.turn_on()
