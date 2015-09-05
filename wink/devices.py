@@ -392,6 +392,33 @@ class garage_door(DeviceBase, Sharable):
         ("desired_state", str)
     ]
 
+    def _get_last_reading(self):
+        state = self.get_config()
+
+        if 'last_reading' in state:
+            return state['last_reading']
+
+
+    def current_position(self):
+        last = self._get_last_reading()
+
+        if 'position' in last:
+            if last['position'] == 0.0:
+                return 'Closed'
+            elif last['position'] == 1.0:
+                return 'Open'
+            elif last['position'] > 0.0 and last['position'] < 1.0:
+                return 'Moving'
+
+        return 'Unknown'
+
+
+    def open(self):
+        pass
+
+    def close(self):
+        pass
+
 # GE Link lightbulb
 class light_bulb(DeviceBase, Sharable):
     non_config_fields = [
