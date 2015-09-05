@@ -362,13 +362,107 @@ class sensor_pod(DeviceBase, Sharable):
 # Wink Hub
 class hub(DeviceBase, Sharable):
     non_config_fields = [
-
+        "created_at",
+        "device_manufacturer",
+        "hidden_at",
+        "lat_lng",
+        "linked_service_id",
+        "locale",
+        "location",
+        "manufacturer_device_id",
+        "manufacturer_device_model",
+        "model_name",
+        "triggers",
+        "unit",
+        "upc_code",
+        "upc_id",
     ]
 
     mutable_fields = [
         ("name", str),
         ("desired_state", dict)
     ]
+
+    def _get_last_reading(self):
+        """Get the last reading of the device"""
+        state = self.get_config()
+
+        if 'last_reading' in state:
+            return state['last_reading']
+
+    def _set_state(self, _pairing_mode=None, _kidde_radio_code=None):
+        """Change the devices state"""
+        new_state = {}
+        if _pairing_mode is not None:
+            new_state['pairing_mode'] = _pairing_mode
+
+        if _kidde_radio_code is not None:
+            new_state['kidde_radio_code'] = _kidde_radio_code
+
+        self.update(dict(desired_state=new_state))
+
+    def is_update_needed(self):
+        """Does the hub require an update"""
+        last = self._get_last_reading()
+
+        if 'update_needed' in last:
+            return last['update_needed']
+
+        # if unknown, assume false
+        return False
+
+    def get_mac_address(self):
+        """Return the MAC address of the hub"""
+        last = self._get_last_reading()
+
+        if 'mac_address' in last:
+            return last['mac_address']
+
+        return 'Unknown'
+
+    def get_ip_address(self):
+        """Return the ip address of the hub"""
+        last = self._get_last_reading()
+
+        if 'ip_address' in last:
+            return last['ip_address']
+
+        return 'Unknown'
+
+    def get_firmware_version(self):
+        """Return the firmware version of the hub"""
+        last = self._get_last_reading()
+
+        if 'firmware_version' in last:
+            return last['firmware_version']
+
+        return 'Unknown'
+
+    def get_pairing_mode(self):
+        """Return the pairing mode of the hub"""
+        last = self._get_last_reading()
+
+        if 'pairing_mode' in last:
+            return last['pairing_mode']
+
+        return 'Unknown'
+
+    def set_pairing_mode(self, pairing_mode=None):
+        """Set the pairing mode of the hub"""
+        self._set_state(_pairing_mode=pairing_mode)
+
+    def get_kidde_radio_code(self):
+        """Return the kidde radio code of the hub"""
+        last = self._get_last_reading()
+
+        if 'kidde_radio_code' in last:
+            return last['kidde_radio_code']
+
+        return -1
+
+    def set_kidde_radio_code(self, kidde_radio_code=None):
+        """Return the kidde radio code of the hub"""
+        self._set_state(_kidde_radio_code=kidde_radio_code)
 
 
 # DropCam / NestCam
