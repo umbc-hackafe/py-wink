@@ -8,7 +8,8 @@ from .auth import auth
 from .persist import ConfigFile
 
 
-def login(base_url="https://winkapi.quirky.com", config_file="config.cfg"):
+def login(base_url="https://winkapi.quirky.com", config_file=None,
+          **kwargs):
     """
     Request authentication information from the user,
     make the authentication request, and
@@ -26,7 +27,10 @@ def login(base_url="https://winkapi.quirky.com", config_file="config.cfg"):
         "username",
         "password",
     ]:
-        auth_info[k] = input("%s? " % k)
+        if k in kwargs:
+            auth_info[k] = kwargs[k]
+        else:
+            auth_info[k] = input("%s? " % k)
 
     try:
         auth_result = auth(**auth_info)
@@ -36,8 +40,9 @@ def login(base_url="https://winkapi.quirky.com", config_file="config.cfg"):
     else:
         print("Authentication success! ;-)")
 
-        cf = ConfigFile(config_file)
-        cf.save(auth_result)
+        if config_file:
+            cf = ConfigFile(config_file)
+            cf.save(auth_result)
 
 
 def init(config_file="config.cfg", debug=False):
