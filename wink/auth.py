@@ -62,9 +62,9 @@ def auth(grant_type="password", auth_path="/oauth2/token", **kwargs):
             password=kwargs["password"],
         )
 
-    if 'username' in kwargs.keys():
+    if 'username' in list(kwargs.keys()):
         data['username'] = kwargs['username']
-    elif 'user_id' in kwargs.keys():
+    elif 'user_id' in list(kwargs.keys()):
         data['user_id'] = kwargs['user_id']
 
     result = _auth(data, auth_path=auth_path, **kwargs)

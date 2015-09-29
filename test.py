@@ -4,4 +4,4 @@ if __name__ == "__main__":
     w = wink.init()
 
     for device in w.device_list():
-        print device.device_type(), device.id
+        print(device.device_type(), device.id)

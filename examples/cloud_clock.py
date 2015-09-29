@@ -16,17 +16,17 @@ if __name__ == "__main__":
 
     c = w.cloud_clock()
 
-    print "found cloud_clock %s called %s!" % (c.id, c.data.get("name"))
+    print("found cloud_clock %s called %s!" % (c.id, c.data.get("name")))
 
-    print "'demoing' each of the dials:"
+    print("'demoing' each of the dials:")
 
     for i, dial in enumerate(c.dials()):
-        print "dial #%d '%s'..." % (i+1, dial.data.get("name"))
+        print("dial #%d '%s'..." % (i+1, dial.data.get("name")))
         dial.demo()
 
-    print "let's switch things up... rotate left!"
+    print("let's switch things up... rotate left!")
     c.rotate()
     time.sleep(5)
 
-    print "reverting to original state."
+    print("reverting to original state.")
     c.revert()

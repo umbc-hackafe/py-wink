@@ -1,4 +1,4 @@
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 
 class Sharable(object):
@@ -27,7 +27,7 @@ class Sharable(object):
     def _share_path(self, email=None):
         if not email:
             return "%s/users" % self._path()
-        return "%s/users/%s" % (self._path(), urllib.quote(email))
+        return "%s/users/%s" % (self._path(), urllib.parse.quote(email))
 
     def get_sharing(self):
         return self.wink._get(self._share_path())

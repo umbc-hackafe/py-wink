@@ -1,4 +1,4 @@
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 
 
 class PersistInterface(object):
@@ -28,7 +28,7 @@ class ConfigFile(PersistInterface):
     def save(self, data):
         cp = ConfigParser()
         cp.add_section("auth")
-        for k, v in data.iteritems():
+        for k, v in data.items():
             cp.set("auth", k, v)
         with open(self.filename, "wb") as f:
             cp.write(f)

@@ -1,4 +1,4 @@
-from interfaces import *
+from .interfaces import *
 
 import time
 
@@ -537,7 +537,7 @@ class garage_door(DeviceBase, Sharable):
     def _set_state(self, position=None):
         """Change the devices state"""
         new_state = {
-                        u'position': position
+                        'position': position
                     }
 
         self.update(dict(desired_state=new_state))

@@ -27,10 +27,10 @@ the Wink class, and populates the devices from the Wink server.
 
 """
 
-from auth import auth, reauth, need_to_reauth
+from .auth import auth, reauth, need_to_reauth
 
-import persist
+from . import persist
 
-from api import Wink
+from .api import Wink
 
-from util import login, init
+from .util import login, init

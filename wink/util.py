@@ -3,9 +3,9 @@ as opposed to external scripts.
 
 """
 
-from api import Wink
-from auth import auth
-from persist import ConfigFile
+from .api import Wink
+from .auth import auth
+from .persist import ConfigFile
 
 
 def login(base_url="https://winkapi.quirky.com", config_file="config.cfg"):
@@ -26,15 +26,15 @@ def login(base_url="https://winkapi.quirky.com", config_file="config.cfg"):
         "username",
         "password",
     ]:
-        auth_info[k] = raw_input("%s? " % k)
+        auth_info[k] = input("%s? " % k)
 
     try:
         auth_result = auth(**auth_info)
     except RuntimeError as e:
-        print "Authentication failed. :("
-        print e
+        print("Authentication failed. :(")
+        print(e)
     else:
-        print "Authentication success! ;-)"
+        print("Authentication success! ;-)")
 
         cf = ConfigFile(config_file)
         cf.save(auth_result)

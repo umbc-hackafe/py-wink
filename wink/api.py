@@ -2,8 +2,8 @@ import httplib2
 import json
 from pprint import pprint
 
-from auth import auth, reauth, need_to_reauth, need_to_auth
-import devices
+from .auth import auth, reauth, need_to_reauth, need_to_auth
+from . import devices
 
 
 class Wink(object):
@@ -62,13 +62,13 @@ class Wink(object):
         # have we ever authed?
         if need_to_auth(**self.auth):
             if self.debug:
-                print "Getting first access token"
+                print("Getting first access token")
             self.auth = auth(**self.auth)
 
         # see if we need to reauth?
         if need_to_reauth(**self.auth):
             if self.debug:
-                print "Refreshing access token"
+                print("Refreshing access token")
 
             # TODO add error handling
             self.auth = reauth(**self.auth)
@@ -77,10 +77,10 @@ class Wink(object):
                 self.auth_object.save(self.auth)
 
         if self.debug:
-            print "Authentication being used:\n" \
+            print("Authentication being used:\n" \
                 "\tAccess token : %s\n" \
                 "\tRefresh token : %s" % (self.auth['access_token'],
-                                          self.auth['refresh_token'])
+                                          self.auth['refresh_token']))
 
         # add the auth header
         all_headers = self._headers()
@@ -92,11 +92,11 @@ class Wink(object):
                 body = json.dumps(body)
 
         if self.debug:
-            print "Request: %s %s" % (method, path)
+            print("Request: %s %s" % (method, path))
             if headers:
-                print "Extra headers:", headers
+                print("Extra headers:", headers)
             if body:
-                print "Body:",
+                print("Body:", end=' ')
                 pprint(body)
 
         resp, content = self.http.request(
@@ -107,7 +107,7 @@ class Wink(object):
         )
 
         if self.debug:
-            print "Response:", resp["status"]
+            print("Response:", resp["status"])
 
         # coerce to JSON, if possible
         if content:
