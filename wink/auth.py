@@ -101,6 +101,8 @@ def _auth(data, auth_path="/oauth2/token", **kwargs):
         body=json.dumps(body),
     )
 
+    content = content.decode('utf-8')
+
     # TODO handle case of bad auth information
 
     if resp["status"] != "201" and resp["status"] != "200":

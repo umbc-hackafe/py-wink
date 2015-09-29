@@ -106,6 +106,8 @@ class Wink(object):
             body=body
         )
 
+        content = content.decode('utf-8')
+
         if self.debug:
             print("Response:", resp["status"])
 
